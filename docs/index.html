@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>免費養龍蝦｜OpenClaw + Oracle Cloud + LiteLLM</title>
+    <meta
+      name="description"
+      content="零成本架設 24/7 個人 AI 助手的教學入口頁，整合 OpenClaw、Oracle Cloud Always Free 與 LiteLLM。"
+    />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f4f7fb;
+        --surface: #ffffff;
+        --surface-alt: #eef7ff;
+        --text: #123047;
+        --muted: #4e6475;
+        --primary: #0f7ae5;
+        --primary-dark: #0856a4;
+        --border: #d8e4ef;
+        --shadow: 0 18px 40px rgba(15, 55, 95, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.6;
+        color: var(--text);
+        background: linear-gradient(180deg, #f7fbff 0%, var(--bg) 100%);
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .page {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+      }
+
+      .hero {
+        background: radial-gradient(circle at top right, #d8ecff 0%, #ffffff 52%, #f4f7fb 100%);
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        padding: 48px 32px;
+        box-shadow: var(--shadow);
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(15, 122, 229, 0.1);
+        color: var(--primary-dark);
+        font-weight: 700;
+        font-size: 14px;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        margin-top: 18px;
+        font-size: clamp(36px, 7vw, 56px);
+        line-height: 1.08;
+      }
+
+      .hero p {
+        max-width: 720px;
+        margin-top: 18px;
+        font-size: 18px;
+        color: var(--muted);
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 28px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        padding: 0 20px;
+        border-radius: 14px;
+        border: 1px solid transparent;
+        text-decoration: none;
+        font-weight: 700;
+      }
+
+      .button-primary {
+        color: #fff;
+        background: var(--primary);
+      }
+
+      .button-primary:hover {
+        background: var(--primary-dark);
+      }
+
+      .button:focus-visible {
+        outline: 3px solid rgba(15, 122, 229, 0.28);
+        outline-offset: 3px;
+      }
+
+      .button-secondary {
+        color: var(--primary-dark);
+        background: #fff;
+        border-color: var(--border);
+      }
+
+      .section {
+        margin-top: 28px;
+      }
+
+      .section h2 {
+        margin-bottom: 16px;
+        font-size: 28px;
+      }
+
+      .grid {
+        display: grid;
+        gap: 18px;
+      }
+
+      .grid-3 {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .grid-2 {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+
+      .card {
+        padding: 24px;
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        background: var(--surface);
+        box-shadow: 0 10px 24px rgba(16, 40, 68, 0.06);
+      }
+
+      .card-accent {
+        background: var(--surface-alt);
+      }
+
+      .card h3 {
+        margin-bottom: 10px;
+        font-size: 22px;
+      }
+
+      .card p,
+      .card li {
+        color: var(--muted);
+      }
+
+      .card ul {
+        margin: 14px 0 0;
+        padding-left: 20px;
+      }
+
+      .roadmap {
+        display: grid;
+        gap: 14px;
+      }
+
+      .roadmap a,
+      .roadmap article {
+        display: block;
+        padding: 22px;
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        text-decoration: none;
+        background: var(--surface);
+        box-shadow: 0 10px 24px rgba(16, 40, 68, 0.06);
+      }
+
+      .roadmap strong {
+        display: block;
+        font-size: 20px;
+      }
+
+      .roadmap span {
+        display: block;
+        margin-top: 8px;
+        color: var(--muted);
+      }
+
+      .note {
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .tag {
+        display: inline-block;
+        margin-top: 14px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: #fff3d5;
+        color: #8a6100;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      footer {
+        margin-top: 40px;
+        text-align: center;
+        color: var(--muted);
+      }
+
+      @media (max-width: 640px) {
+        .page {
+          padding: 20px 16px 48px;
+        }
+
+        .hero,
+        .card,
+        .roadmap a,
+        .roadmap article {
+          padding: 20px;
+        }
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #091623;
+          --surface: #102233;
+          --surface-alt: #12304a;
+          --text: #e8f2fb;
+          --muted: #b5cbde;
+          --primary: #5aa8ff;
+          --primary-dark: #8fc4ff;
+          --border: #23425e;
+          --shadow: 0 18px 40px rgba(0, 0, 0, 0.32);
+        }
+
+        body {
+          background: linear-gradient(180deg, #08121d 0%, var(--bg) 100%);
+        }
+
+        .hero {
+          background: radial-gradient(circle at top right, #173149 0%, #102233 55%, #091623 100%);
+        }
+
+        .button-secondary {
+          background: #142b41;
+        }
+
+        .tag {
+          background: rgba(255, 214, 102, 0.18);
+          color: #ffd980;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero">
+        <span class="badge">🦞 免費養龍蝦計畫</span>
+        <h1>零成本架設 24/7 個人 AI 助手</h1>
+        <p>
+          用
+          <a
+            href="https://github.com/openclaw/openclaw"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="OpenClaw（在新分頁開啟）"
+            >OpenClaw</a
+          >
+          當龍蝦、
+          <a
+            href="https://www.oracle.com/cloud/free/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Oracle Cloud Always Free（在新分頁開啟）"
+            >Oracle Cloud Always Free</a
+          >
+          當池子，再搭配
+          <a
+            href="https://github.com/BerriAI/litellm"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LiteLLM（在新分頁開啟）"
+            >LiteLLM</a
+          >
+          與免費模型 API 當飼料，
+          把你的個人 AI 助手養在雲上，全天候待命。
+        </p>
+        <div class="actions">
+          <a class="button button-primary" href="#roadmap">開始閱讀教學</a>
+          <a class="button button-secondary" href="#components">了解三個元件</a>
+        </div>
+      </section>
+
+      <section class="section" id="components">
+        <h2>三個核心元件</h2>
+        <div class="grid grid-3">
+          <article class="card">
+            <h3>龍蝦：OpenClaw</h3>
+            <p>開源個人 AI 助手，支援 LINE、Telegram、Discord、Slack 等 20+ 訊息頻道。</p>
+          </article>
+          <article class="card">
+            <h3>池子：Oracle Cloud</h3>
+            <p>Always Free ARM VM 提供 4 OCPU、24 GB RAM、200 GB 儲存空間，適合長時間運行。</p>
+          </article>
+          <article class="card">
+            <h3>飼料：LiteLLM + 免費模型</h3>
+            <p>整合 Ollama Cloud、Gemini 等模型來源，統一成 OpenAI-compatible API。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="grid grid-2">
+          <article class="card card-accent">
+            <h2>你會得到什麼</h2>
+            <ul>
+              <li>零成本起步的個人 AI 助手架構</li>
+              <li>Oracle ARM VM + Tailscale 的安全部署方式</li>
+              <li>多個免費模型來源的備援與負載分配策略</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h2>適合誰</h2>
+            <ul>
+              <li>想把 AI 助手放到自己的 VM 上長期運行</li>
+              <li>希望避免月租與冷啟動成本</li>
+              <li>偏好用繁體中文閱讀完整部署教學</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="roadmap">
+        <h2>教學路線</h2>
+        <p class="note">下列連結會開啟 repo 內的 Markdown 文件，方便直接接續閱讀現有教學內容。</p>
+        <div class="roadmap">
+          <a href="./oracle-cloud-setup.md">
+            <strong>1. 建立免費的池子</strong>
+            <span>Oracle Cloud ARM VM、Tailscale 與成本防護設定。</span>
+          </a>
+          <article>
+            <strong>2. 安裝龍蝦</strong>
+            <span>OpenClaw 安裝與設定文件待補上，之後會接在池子與飼料之間。</span>
+            <span class="tag">待撰寫</span>
+          </article>
+          <a href="./litellm-setup.md">
+            <strong>3. 準備飼料</strong>
+            <span>串接 Ollama Cloud、Gemini 與 LiteLLM，建立穩定的模型入口。</span>
+          </a>
+        </div>
+      </section>
+
+      <footer>
+        內容語言為 zh-TW，所有教學中的敏感資訊都應以 placeholder 取代。
+      </footer>
+    </main>
+  </body>
+</html>
