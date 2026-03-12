@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>免費養龍蝦 — OpenClaw + Oracle Cloud + Ollama/LiteLLM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #24292e;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        main {
+            padding: 40px 30px;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            color: #667eea;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e1e4e8;
+        }
+
+        .intro {
+            font-size: 1.1em;
+            color: #586069;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .components {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .component-card {
+            background: #f6f8fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .component-card h3 {
+            color: #24292e;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .component-card p {
+            color: #586069;
+            font-size: 0.95em;
+        }
+
+        .component-card .emoji {
+            font-size: 2em;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .docs-list {
+            background: #f6f8fa;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .doc-item {
+            padding: 20px 25px;
+            border-bottom: 1px solid #e1e4e8;
+            display: flex;
+            align-items: center;
+            transition: background 0.2s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .doc-item:last-child {
+            border-bottom: none;
+        }
+
+        .doc-item:hover {
+            background: #e1e4e8;
+        }
+
+        .doc-number {
+            background: #667eea;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .doc-content {
+            flex: 1;
+        }
+
+        .doc-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .doc-desc {
+            color: #586069;
+            font-size: 0.95em;
+        }
+
+        .doc-status {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            margin-left: 15px;
+        }
+
+        .status-done {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .features {
+            background: linear-gradient(135deg, #f6f8fa 0%, #e1e4e8 100%);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .features h3 {
+            color: #24292e;
+            margin-bottom: 15px;
+        }
+
+        .features ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .features li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        footer {
+            background: #f6f8fa;
+            padding: 30px;
+            text-align: center;
+            color: #586069;
+            border-top: 1px solid #e1e4e8;
+        }
+
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.6em;
+            }
+
+            .subtitle {
+                font-size: 1em;
+            }
+
+            .components {
+                grid-template-columns: 1fr;
+            }
+
+            .doc-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .doc-number {
+                margin-bottom: 10px;
+            }
+
+            .doc-status {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🦞 免費養龍蝦</h1>
+            <p class="subtitle">零成本架設 24/7 個人 AI 助手完整教學</p>
+        </header>
+
+        <main>
+            <section class="intro-section">
+                <p class="intro">
+                    <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener">OpenClaw</a> 是開源的個人 AI 助手，支援 LINE、Telegram、Discord、Slack 等 20+ 訊息頻道。
+                    這個教學教你如何用<strong>完全免費</strong>的資源把它跑起來，24 小時不間斷。
+                </p>
+            </section>
+
+            <section>
+                <h2>三大核心元件</h2>
+                <div class="components">
+                    <div class="component-card">
+                        <span class="emoji">🦞</span>
+                        <h3>龍蝦：OpenClaw</h3>
+                        <p>開源個人 AI 助手，支援 20+ 訊息頻道</p>
+                    </div>
+
+                    <div class="component-card">
+                        <span class="emoji">🏊</span>
+                        <h3>池：Oracle Cloud</h3>
+                        <p>ARM VM (4 OCPU / 24 GB / 200 GB)，永久免費</p>
+                    </div>
+
+                    <div class="component-card">
+                        <span class="emoji">🍤</span>
+                        <h3>飼料：Ollama + LiteLLM</h3>
+                        <p>免費模型 API + 統一 LLM gateway</p>
+                    </div>
+                </div>
+
+                <div class="features">
+                    <h3>你會得到：</h3>
+                    <ul>
+                        <li>完全免費的 24/7 AI 助手服務</li>
+                        <li>4 核心 ARM CPU + 24 GB RAM + 200 GB 儲存空間</li>
+                        <li>支援多個免費 LLM 模型自動切換</li>
+                        <li>安全的 Tailscale VPN 連線</li>
+                        <li>可整合 LINE、Telegram、Discord、Slack 等平台</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>📚 教學文件</h2>
+                <div class="docs-list">
+                    <a href="oracle-cloud-setup.html" class="doc-item">
+                        <div class="doc-number">1</div>
+                        <div class="doc-content">
+                            <div class="doc-title">建立免費的池子</div>
+                            <div class="doc-desc">Oracle Cloud ARM VM 建立 + Tailscale 安全連線</div>
+                        </div>
+                        <span class="doc-status status-done">已完成</span>
+                    </a>
+
+                    <div class="doc-item" style="opacity: 0.6; cursor: not-allowed;">
+                        <div class="doc-number">2</div>
+                        <div class="doc-content">
+                            <div class="doc-title">安裝龍蝦</div>
+                            <div class="doc-desc">OpenClaw 安裝與設定</div>
+                        </div>
+                        <span class="doc-status status-pending">待撰寫</span>
+                    </div>
+
+                    <a href="litellm-setup.html" class="doc-item">
+                        <div class="doc-number">3</div>
+                        <div class="doc-content">
+                            <div class="doc-title">準備飼料</div>
+                            <div class="doc-desc">免費 LLM 模型 + LiteLLM 統一 gateway</div>
+                        </div>
+                        <span class="doc-status status-done">已完成</span>
+                    </a>
+                </div>
+            </section>
+
+            <section>
+                <h2>🚀 開始之前</h2>
+                <div class="features">
+                    <h3>你需要準備：</h3>
+                    <ul>
+                        <li>實體信用卡（Visa / Mastercard / AMEX）— Oracle Cloud 身份驗證用，不會扣款</li>
+                        <li><a href="https://tailscale.com" target="_blank" rel="noopener">Tailscale</a> 帳號（免費）</li>
+                        <li>約 1-2 小時的時間</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>
+                本專案採用 <a href="https://github.com/yicianwang0629/openclaw-share/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>
+            </p>
+            <p style="margin-top: 10px;">
+                <a href="https://github.com/yicianwang0629/openclaw-share" target="_blank" rel="noopener">📦 View on GitHub</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
