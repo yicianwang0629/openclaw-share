@@ -31,7 +31,7 @@ Oracle Cloud ARM VM (Singapore)
 |------|------|------|
 | `docs/oracle-cloud-setup.md` | 建立免費的池子（Oracle Cloud ARM VM + Tailscale） | 完成 |
 | `docs/openclaw-install.md` | 安裝龍蝦（OpenClaw） | 待撰寫 |
-| `docs/litellm-setup.md` | 準備飼料（LLM 模型 + LiteLLM） | 待撰寫 |
+| `docs/litellm-setup.md` | 準備飼料（LLM 模型 + LiteLLM） | 完成 |
 
 ## Content Guidelines
 

@@ -38,7 +38,7 @@ flowchart LR
 |---|------|------|
 | 1 | [建立免費的池子](docs/oracle-cloud-setup.md) | Oracle Cloud ARM VM 建立 + Tailscale 安全連線 |
 | 2 | 安裝龍蝦（待撰寫） | OpenClaw 安裝與設定 |
-| 3 | 準備飼料（待撰寫） | 免費 LLM 模型 + LiteLLM 統一 gateway |
+| 3 | [準備飼料](docs/litellm-setup.md) | 免費 LLM 模型 + LiteLLM 統一 gateway |
 
 ## 前置需求
 
