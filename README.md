@@ -40,6 +40,10 @@ flowchart LR
 | 2 | 安裝龍蝦（待撰寫） | OpenClaw 安裝與設定 |
 | 3 | [準備飼料](docs/litellm-setup.md) | 免費 LLM 模型 + LiteLLM 統一 gateway |
 
+## 線上頁面
+
+- [Landing Page（GitHub Pages）](https://yicianwang0629.github.io/openclaw-share/)：快速總覽與文件導覽。
+
 ## 前置需求
 
 - 實體信用卡（Visa / Mastercard / AMEX）— Oracle Cloud 身份驗證用，不會扣款

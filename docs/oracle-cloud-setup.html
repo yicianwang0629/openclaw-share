@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>建立免費的池子 — Oracle Cloud ARM VM + Tailscale</title>
+  <link id="md-css-dark" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5/github-markdown-dark.min.css">
+  <link id="md-css-light" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5/github-markdown-light.min.css" disabled>
+  <style>
+    /* ── Dark theme (default) ─────────────────────────────────── */
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f172a, #0b1222);
+      color: #e2e8f0;
+      font-family: system-ui, -apple-system, 'Noto Sans TC', 'PingFang TC', sans-serif;
+      padding: 48px 16px;
+    }
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .back-link {
+      display: inline-block;
+      color: #22d3ee;
+      text-decoration: none;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+    .back-link:hover { text-decoration: underline; }
+    .markdown-body {
+      background: transparent;
+      color: #e2e8f0;
+    }
+    .markdown-body a { color: #22d3ee; }
+    .markdown-body h1, .markdown-body h2, .markdown-body h3 {
+      border-bottom-color: rgba(255,255,255,0.1);
+    }
+    .markdown-body code {
+      background: rgba(255,255,255,0.08);
+    }
+    .markdown-body pre {
+      background: rgba(0,0,0,0.3);
+    }
+    .markdown-body table tr {
+      background: transparent;
+      border-color: rgba(255,255,255,0.1);
+    }
+    .markdown-body table tr:nth-child(2n) {
+      background: rgba(255,255,255,0.03);
+    }
+    .markdown-body table th, .markdown-body table td {
+      border-color: rgba(255,255,255,0.1);
+    }
+    .markdown-body blockquote {
+      border-left-color: #22d3ee;
+      color: #cbd5e1;
+    }
+    .markdown-body hr {
+      background-color: rgba(255,255,255,0.1);
+    }
+
+    /* ── Light theme ──────────────────────────────────────────── */
+    [data-theme="light"] body {
+      background: linear-gradient(135deg, #f8fafc, #eef2f7);
+      color: #1e293b;
+    }
+    [data-theme="light"] .back-link {
+      color: #0891b2;
+    }
+    [data-theme="light"] .markdown-body {
+      background: transparent;
+      color: #1e293b;
+    }
+    [data-theme="light"] .markdown-body a { color: #0891b2; }
+    [data-theme="light"] .markdown-body h1,
+    [data-theme="light"] .markdown-body h2,
+    [data-theme="light"] .markdown-body h3 {
+      border-bottom-color: rgba(0,0,0,0.1);
+    }
+    [data-theme="light"] .markdown-body code {
+      background: rgba(0,0,0,0.06);
+    }
+    [data-theme="light"] .markdown-body pre {
+      background: rgba(0,0,0,0.04);
+    }
+    [data-theme="light"] .markdown-body table tr {
+      background: transparent;
+      border-color: rgba(0,0,0,0.1);
+    }
+    [data-theme="light"] .markdown-body table tr:nth-child(2n) {
+      background: rgba(0,0,0,0.03);
+    }
+    [data-theme="light"] .markdown-body table th,
+    [data-theme="light"] .markdown-body table td {
+      border-color: rgba(0,0,0,0.1);
+    }
+    [data-theme="light"] .markdown-body blockquote {
+      border-left-color: #0891b2;
+      color: #475569;
+    }
+    [data-theme="light"] .markdown-body hr {
+      background-color: rgba(0,0,0,0.1);
+    }
+
+    /* ── Theme toggle button ──────────────────────────────────── */
+    .theme-toggle {
+      float: right;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #e2e8f0;
+      cursor: pointer;
+      font-size: 13px;
+      padding: 4px 12px;
+      border-radius: 6px;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+    .theme-toggle:hover {
+      background: rgba(255,255,255,0.14);
+    }
+    [data-theme="light"] .theme-toggle {
+      background: rgba(0,0,0,0.05);
+      border-color: rgba(0,0,0,0.15);
+      color: #1e293b;
+    }
+    [data-theme="light"] .theme-toggle:hover {
+      background: rgba(0,0,0,0.10);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button class="theme-toggle" id="theme-toggle" aria-label="切換主題">moon</button>
+    <a class="back-link" href="index.html">&larr; 返回首頁</a>
+    <div id="content" class="markdown-body">載入中...</div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/marked@11/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script>
+    (function () {
+      var STORAGE_KEY = 'theme';
+      var darkCss  = document.getElementById('md-css-dark');
+      var lightCss = document.getElementById('md-css-light');
+      var btn      = document.getElementById('theme-toggle');
+      var mdLoaded = false;
+
+      /* ── Determine initial theme ─────────────────────────── */
+      function getSystemTheme() {
+        return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      }
+
+      var saved = localStorage.getItem(STORAGE_KEY);
+      var current = saved || getSystemTheme();
+
+      /* ── Apply theme ─────────────────────────────────────── */
+      function applyTheme(theme) {
+        current = theme;
+        document.documentElement.dataset.theme = theme;
+
+        if (theme === 'light') {
+          darkCss.disabled  = true;
+          lightCss.disabled = false;
+          btn.textContent   = 'sun';
+        } else {
+          darkCss.disabled  = false;
+          lightCss.disabled = true;
+          btn.textContent   = 'moon';
+        }
+
+        /* Re-render mermaid diagrams with matching theme */
+        if (mdLoaded) {
+          rerenderMermaid(theme);
+        }
+      }
+
+      /* ── Mermaid ─────────────────────────────────────────── */
+      function initMermaid(theme) {
+        mermaid.initialize({ startOnLoad: false, theme: theme === 'light' ? 'default' : 'dark' });
+      }
+
+      function rerenderMermaid(theme) {
+        /* Remove previously rendered SVGs and restore original source */
+        document.querySelectorAll('pre.mermaid[data-source]').forEach(function (div) {
+          div.removeAttribute('data-processed');
+          div.textContent = div.getAttribute('data-source');
+        });
+        initMermaid(theme);
+        mermaid.run();
+      }
+
+      /* ── Toggle handler ──────────────────────────────────── */
+      btn.addEventListener('click', function () {
+        var next = current === 'dark' ? 'light' : 'dark';
+        localStorage.setItem(STORAGE_KEY, next);
+        applyTheme(next);
+      });
+
+      /* ── Boot ────────────────────────────────────────────── */
+      initMermaid(current);
+      applyTheme(current);
+
+      /* ── Fetch & render markdown ─────────────────────────── */
+      fetch('oracle-cloud-setup.md')
+        .then(function (r) {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.text();
+        })
+        .then(function (text) {
+          document.getElementById('content').innerHTML = marked.parse(text);
+          document.querySelectorAll('code.language-mermaid').forEach(function (code) {
+            var pre = code.parentElement;
+            var div = document.createElement('pre');
+            div.className = 'mermaid';
+            div.setAttribute('data-source', code.textContent);
+            div.textContent = code.textContent;
+            pre.replaceWith(div);
+          });
+          mdLoaded = true;
+          mermaid.run();
+        })
+        .catch(function () {
+          document.getElementById('content').innerHTML =
+            '<p>無法載入文件，請<a href="oracle-cloud-setup.md">直接查看 Markdown</a>。</p>';
+        });
+    }());
+  </script>
+</body>
+</html>
