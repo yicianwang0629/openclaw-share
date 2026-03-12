@@ -69,15 +69,16 @@
   <script>
     mermaid.initialize({ startOnLoad: false, theme: 'dark' });
 
-    var renderer = new marked.Renderer();
-    var defaultCode = renderer.code.bind(renderer);
-    renderer.code = function(token) {
-      if (token.lang === 'mermaid') {
-        return '<pre class="mermaid">' + token.text + '</pre>';
+    marked.use({
+      renderer: {
+        code({ text, lang }) {
+          if (lang === 'mermaid') {
+            return '<pre class="mermaid">' + text + '</pre>';
+          }
+          return false;
+        }
       }
-      return defaultCode(token);
-    };
-    marked.use({ renderer: renderer });
+    });
 
     fetch('oracle-cloud-setup.md')
       .then(function(r) { return r.text(); })
