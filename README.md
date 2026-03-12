@@ -2,6 +2,8 @@
 
 零成本架設 24/7 個人 AI 助手的完整教學。
 
+> 📖 **[線上閱讀](https://yicianwang0629.github.io/openclaw-share/)** — 更好的閱讀體驗
+
 ## 這是什麼？
 
 [OpenClaw](https://github.com/openclaw/openclaw) 是開源的個人 AI 助手，支援 LINE、Telegram、Discord、Slack 等 20+ 訊息頻道。這個 repo 教你如何用**完全免費**的資源把它跑起來。
