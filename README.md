@@ -12,6 +12,11 @@
 | 池 | [Oracle Cloud Always Free](https://www.oracle.com/cloud/free/) | ARM VM (4 OCPU / 24 GB / 200 GB)，永久免費 |
 | 飼料 | [Ollama Cloud](https://ollama.com) + [LiteLLM](https://github.com/BerriAI/litellm) | 免費模型 API + 統一 LLM gateway |
 
+## 展示頁
+
+- 入口頁：`docs/index.html`（可直接當 GitHub Pages 的 `/docs` 站台）
+- 預覽：<https://yicianwang0629.github.io/openclaw-share/>（啟用 GitHub Pages 後即可存取）
+
 ## 架構
 
 ```mermaid

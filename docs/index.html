@@ -8,18 +8,25 @@
       name="description"
       content="零成本架設 24/7 個人 AI 助手的教學入口頁，整合 OpenClaw、Oracle Cloud Always Free 與 LiteLLM。"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
       :root {
         color-scheme: light;
-        --bg: #f4f7fb;
+        --bg: #edf2fb;
         --surface: #ffffff;
-        --surface-alt: #eef7ff;
-        --text: #123047;
-        --muted: #4e6475;
+        --surface-alt: #f7fbff;
+        --text: #0d2236;
+        --muted: #516272;
         --primary: #0f7ae5;
-        --primary-dark: #0856a4;
-        --border: #d8e4ef;
-        --shadow: 0 18px 40px rgba(15, 55, 95, 0.12);
+        --primary-strong: #0a5bb1;
+        --accent: #ffd166;
+        --border: #d9e5f0;
+        --shadow: 0 24px 60px rgba(9, 45, 92, 0.12);
       }
 
       * {
@@ -28,40 +35,18 @@
 
       body {
         margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        line-height: 1.6;
+        font-family: "Space Grotesk", "Noto Sans TC", sans-serif;
+        line-height: 1.7;
         color: var(--text);
-        background: linear-gradient(180deg, #f7fbff 0%, var(--bg) 100%);
+        background:
+          radial-gradient(120% 90% at 10% 20%, rgba(15, 122, 229, 0.08), transparent 50%),
+          radial-gradient(80% 70% at 90% 10%, rgba(255, 209, 102, 0.12), transparent 45%),
+          linear-gradient(180deg, #f9fbff 0%, var(--bg) 60%, #f2f6fc 100%);
+        min-height: 100vh;
       }
 
       a {
         color: inherit;
-      }
-
-      .page {
-        max-width: 1080px;
-        margin: 0 auto;
-        padding: 32px 20px 64px;
-      }
-
-      .hero {
-        background: radial-gradient(circle at top right, #d8ecff 0%, #ffffff 52%, #f4f7fb 100%);
-        border: 1px solid var(--border);
-        border-radius: 28px;
-        padding: 48px 32px;
-        box-shadow: var(--shadow);
-      }
-
-      .badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 14px;
-        border-radius: 999px;
-        background: rgba(15, 122, 229, 0.1);
-        color: var(--primary-dark);
-        font-weight: 700;
-        font-size: 14px;
       }
 
       h1,
@@ -71,10 +56,71 @@
         margin: 0;
       }
 
-      h1 {
-        margin-top: 18px;
-        font-size: clamp(36px, 7vw, 56px);
+      .page {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 32px 22px 72px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+      }
+
+      .logo span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        background: #0f7ae5;
+        color: #fff;
+        font-size: 20px;
+      }
+
+      .chip {
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(15, 122, 229, 0.12);
+        color: var(--primary-strong);
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .hero {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        padding: 48px 34px;
+        background: linear-gradient(135deg, #ffffff 0%, #f9fbff 40%, #f2f8ff 100%);
+        box-shadow: var(--shadow);
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 80% 0%, rgba(15, 122, 229, 0.12), transparent 40%);
+        pointer-events: none;
+      }
+
+      .hero h1 {
+        font-size: clamp(36px, 6vw, 56px);
         line-height: 1.08;
+        letter-spacing: -0.01em;
       }
 
       .hero p {
@@ -95,36 +141,35 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        min-height: 48px;
+        min-height: 50px;
         padding: 0 20px;
         border-radius: 14px;
         border: 1px solid transparent;
         text-decoration: none;
         font-weight: 700;
+        letter-spacing: 0.01em;
       }
 
       .button-primary {
         color: #fff;
-        background: var(--primary);
-      }
-
-      .button-primary:hover {
-        background: var(--primary-dark);
+        background: linear-gradient(120deg, var(--primary) 0%, var(--primary-strong) 100%);
+        box-shadow: 0 12px 30px rgba(15, 122, 229, 0.25);
       }
 
       .button-secondary {
-        color: var(--primary-dark);
+        color: var(--primary-strong);
         background: #fff;
         border-color: var(--border);
       }
 
       .section {
-        margin-top: 28px;
+        margin-top: 34px;
       }
 
       .section h2 {
-        margin-bottom: 16px;
+        margin-bottom: 14px;
         font-size: 28px;
+        letter-spacing: -0.01em;
       }
 
       .grid {
@@ -133,19 +178,20 @@
       }
 
       .grid-3 {
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       }
 
       .grid-2 {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       }
 
       .card {
+        position: relative;
         padding: 24px;
         border: 1px solid var(--border);
-        border-radius: 22px;
+        border-radius: 20px;
         background: var(--surface);
-        box-shadow: 0 10px 24px rgba(16, 40, 68, 0.06);
+        box-shadow: 0 12px 28px rgba(16, 40, 68, 0.06);
       }
 
       .card-accent {
@@ -153,8 +199,8 @@
       }
 
       .card h3 {
-        margin-bottom: 10px;
-        font-size: 22px;
+        margin-bottom: 12px;
+        font-size: 20px;
       }
 
       .card p,
@@ -164,31 +210,43 @@
 
       .card ul {
         margin: 14px 0 0;
-        padding-left: 20px;
+        padding-left: 18px;
       }
 
-      .roadmap {
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        margin-bottom: 10px;
+        border-radius: 999px;
+        background: rgba(15, 122, 229, 0.08);
+        color: var(--primary-strong);
+        font-weight: 600;
+        font-size: 13px;
+      }
+
+      .steps {
         display: grid;
         gap: 14px;
       }
 
-      .roadmap a,
-      .roadmap article {
+      .steps a {
         display: block;
         padding: 22px;
-        border-radius: 20px;
+        border-radius: 18px;
         border: 1px solid var(--border);
+        background: #fff;
         text-decoration: none;
-        background: var(--surface);
-        box-shadow: 0 10px 24px rgba(16, 40, 68, 0.06);
+        box-shadow: 0 10px 24px rgba(16, 40, 68, 0.05);
       }
 
-      .roadmap strong {
+      .steps strong {
         display: block;
-        font-size: 20px;
+        font-size: 19px;
       }
 
-      .roadmap span {
+      .steps span {
         display: block;
         margin-top: 8px;
         color: var(--muted);
@@ -196,13 +254,21 @@
 
       .tag {
         display: inline-block;
-        margin-top: 14px;
+        margin-top: 12px;
         padding: 6px 12px;
         border-radius: 999px;
         background: #fff3d5;
         color: #8a6100;
         font-size: 13px;
         font-weight: 700;
+      }
+
+      .notes {
+        padding: 18px 18px;
+        border-radius: 16px;
+        border: 1px dashed var(--border);
+        color: var(--muted);
+        background: rgba(255, 209, 102, 0.08);
       }
 
       footer {
@@ -213,13 +279,12 @@
 
       @media (max-width: 640px) {
         .page {
-          padding: 20px 16px 48px;
+          padding: 20px 16px 56px;
         }
 
         .hero,
         .card,
-        .roadmap a,
-        .roadmap article {
+        .steps a {
           padding: 20px;
         }
       }
@@ -227,21 +292,27 @@
   </head>
   <body>
     <main class="page">
+      <header class="topbar">
+        <div class="logo">
+          <span>🦞</span>
+          <div>Free Lobster Lab</div>
+        </div>
+        <div class="chip">zh-TW · 24/7 個人 AI 助手指南</div>
+      </header>
+
       <section class="hero">
-        <span class="badge">🦞 免費養龍蝦計畫</span>
+        <div class="pill">OpenClaw · Oracle Cloud · LiteLLM</div>
         <h1>零成本架設 24/7 個人 AI 助手</h1>
         <p>
           用 <a href="https://github.com/openclaw/openclaw">OpenClaw</a> 當龍蝦、
-          <a href="https://www.oracle.com/cloud/free/">Oracle Cloud Always Free</a>
-          當池子，再搭配
-          <a href="https://github.com/BerriAI/litellm">LiteLLM</a> 與免費模型 API 當飼料，
-          把你的個人 AI 助手養在雲上，全天候待命。
+          <a href="https://www.oracle.com/cloud/free/">Oracle Cloud Always Free</a> 當池子，再搭配
+          <a href="https://github.com/BerriAI/litellm">LiteLLM</a> 與免費模型 API 當飼料，完整教你把個人 AI 助手養在雲上。
         </p>
         <div class="actions">
           <a class="button button-primary" href="https://github.com/yicianwang0629/openclaw-share">
             查看 GitHub Repo
           </a>
-          <a class="button button-secondary" href="#roadmap">開始閱讀教學</a>
+          <a class="button button-secondary" href="#guide">開始閱讀教學</a>
         </div>
       </section>
 
@@ -249,16 +320,19 @@
         <h2>三個核心元件</h2>
         <div class="grid grid-3">
           <article class="card">
-            <h3>龍蝦：OpenClaw</h3>
+            <div class="pill">龍蝦</div>
+            <h3>OpenClaw</h3>
             <p>開源個人 AI 助手，支援 LINE、Telegram、Discord、Slack 等 20+ 訊息頻道。</p>
           </article>
           <article class="card">
-            <h3>池子：Oracle Cloud</h3>
-            <p>Always Free ARM VM 提供 4 OCPU、24 GB RAM、200 GB 儲存空間，適合長時間運行。</p>
+            <div class="pill">池子</div>
+            <h3>Oracle Cloud Always Free</h3>
+            <p>ARM VM 提供 4 OCPU、24 GB RAM、200 GB 儲存空間，適合長時間運行而不付費。</p>
           </article>
           <article class="card">
-            <h3>飼料：LiteLLM + 免費模型</h3>
-            <p>整合 Ollama Cloud、Gemini 等模型來源，統一成 OpenAI-compatible API。</p>
+            <div class="pill">飼料</div>
+            <h3>LiteLLM + 免費模型</h3>
+            <p>整合 Ollama Cloud、Gemini 等模型來源，統一成 OpenAI-compatible API，方便 OpenClaw 直接接入。</p>
           </article>
         </div>
       </section>
@@ -266,7 +340,7 @@
       <section class="section">
         <div class="grid grid-2">
           <article class="card card-accent">
-            <h2>你會得到什麼</h2>
+            <h3>你會得到什麼</h3>
             <ul>
               <li>零成本起步的個人 AI 助手架構</li>
               <li>Oracle ARM VM + Tailscale 的安全部署方式</li>
@@ -274,24 +348,24 @@
             </ul>
           </article>
           <article class="card">
-            <h2>適合誰</h2>
+            <h3>適合誰</h3>
             <ul>
-              <li>想把 AI 助手放到自己的 VM 上長期運行</li>
-              <li>希望避免月租與冷啟動成本</li>
+              <li>想把 AI 助手長駐自己的 VM</li>
+              <li>希望避開月租與冷啟動成本</li>
               <li>偏好用繁體中文閱讀完整部署教學</li>
             </ul>
           </article>
         </div>
       </section>
 
-      <section class="section" id="roadmap">
+      <section class="section" id="guide">
         <h2>教學路線</h2>
-        <div class="roadmap">
+        <div class="steps">
           <a href="https://github.com/yicianwang0629/openclaw-share/blob/main/docs/oracle-cloud-setup.md">
             <strong>1. 建立免費的池子</strong>
-            <span>Oracle Cloud ARM VM、Tailscale 與成本防護設定。</span>
+            <span>Oracle Cloud ARM VM 建立、成本防護、Tailscale 私網連線。</span>
           </a>
-          <article>
+          <article class="card">
             <strong>2. 安裝龍蝦</strong>
             <span>OpenClaw 安裝與設定文件待補上，之後會接在池子與飼料之間。</span>
             <span class="tag">待撰寫</span>
@@ -303,9 +377,31 @@
         </div>
       </section>
 
-      <footer>
-        內容語言為 zh-TW，所有教學中的敏感資訊都應以 placeholder 取代。
-      </footer>
+      <section class="section">
+        <h2>快速記憶點</h2>
+        <div class="grid grid-3">
+          <article class="card">
+            <h3>Always Free 配額</h3>
+            <p>鎖定 Singapore 區域的 4 OCPU / 24 GB ARM VM，加上 200 GB 卷，足以長期跑 OpenClaw。</p>
+          </article>
+          <article class="card">
+            <h3>安全優先</h3>
+            <p>利用 Tailscale SSH 與 Serve/Funnel 對外公開必要端點，避免直接曝露 VM IP。</p>
+          </article>
+          <article class="card">
+            <h3>模型備援</h3>
+            <p>LiteLLM 讓多家免費模型來源疊加，避免配額限制與單點故障。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="notes">
+          內容語言為 zh-TW。教學中出現的敏感資訊請以 placeholder（例如 &lt;YOUR_VM_IP&gt;、&lt;YOUR_API_KEY&gt;）呈現，避免洩露真實數據。
+        </div>
+      </section>
+
+      <footer>Free Lobster Lab · OpenClaw x Oracle Cloud x LiteLLM</footer>
     </main>
   </body>
 </html>
