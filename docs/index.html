@@ -16,6 +16,25 @@
       --muted: #cbd5e1;
       --stroke: rgba(255, 255, 255, 0.1);
       --shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+      --shell-bg: rgba(15, 23, 42, 0.35);
+      --glow-opacity: 0.35;
+      --pill-text: #0b1222;
+    }
+
+    [data-theme="light"] {
+      --bg-1: #f8fafc;
+      --bg-2: #eef2f7;
+      --glass: rgba(0, 0, 0, 0.03);
+      --card: rgba(0, 0, 0, 0.05);
+      --accent: #0891b2;
+      --accent-2: #d97706;
+      --text: #1e293b;
+      --muted: #64748b;
+      --stroke: rgba(0, 0, 0, 0.1);
+      --shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+      --shell-bg: rgba(255, 255, 255, 0.7);
+      --glow-opacity: 0.15;
+      --pill-text: #ffffff;
     }
 
     * { box-sizing: border-box; }
@@ -31,6 +50,7 @@
       font-family: system-ui, -apple-system, 'Noto Sans TC', 'PingFang TC', sans-serif;
       padding: 64px 16px 48px;
       line-height: 1.6;
+      transition: background 200ms ease, color 200ms ease;
     }
 
     .layout {
@@ -43,7 +63,7 @@
       position: absolute;
       inset: 0;
       filter: blur(80px);
-      opacity: 0.35;
+      opacity: var(--glow-opacity);
       pointer-events: none;
       background: radial-gradient(circle at 30% 40%, rgba(34, 211, 238, 0.25), transparent 40%),
                   radial-gradient(circle at 80% 30%, rgba(245, 158, 11, 0.25), transparent 32%);
@@ -53,12 +73,36 @@
     .shell {
       position: relative;
       z-index: 1;
-      background: rgba(15, 23, 42, 0.35);
+      background: var(--shell-bg);
       border: 1px solid var(--stroke);
       border-radius: 24px;
       padding: 32px;
       box-shadow: var(--shadow);
       backdrop-filter: blur(8px);
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 10;
+      padding: 7px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--stroke);
+      background: var(--glass);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+      line-height: 1;
+    }
+
+    .theme-toggle:hover {
+      background: var(--card);
+      border-color: var(--accent);
+      color: var(--accent);
     }
 
     h1 {
@@ -120,8 +164,18 @@
       box-shadow: 0 10px 30px rgba(34, 211, 238, 0.35);
     }
 
+    [data-theme="light"] .btn.primary {
+      color: #ffffff;
+      border-color: rgba(0, 0, 0, 0.1);
+      box-shadow: 0 10px 30px rgba(8, 145, 178, 0.25);
+    }
+
     .btn.secondary {
       background: rgba(255, 255, 255, 0.04);
+    }
+
+    [data-theme="light"] .btn.secondary {
+      background: rgba(0, 0, 0, 0.03);
     }
 
     .btn:hover {
@@ -130,8 +184,17 @@
       background: rgba(255, 255, 255, 0.08);
     }
 
+    [data-theme="light"] .btn:hover {
+      border-color: rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.06);
+    }
+
     .btn.primary:hover {
       background: linear-gradient(135deg, #67e8f9, #38bdf8);
+    }
+
+    [data-theme="light"] .btn.primary:hover {
+      background: linear-gradient(135deg, #0891b2, #0ea5e9);
     }
 
     .grid {
@@ -169,7 +232,7 @@
       padding: 6px 10px;
       border-radius: 999px;
       font-size: 13px;
-      color: #0b1222;
+      color: var(--pill-text);
       background: var(--accent-2);
       font-weight: 700;
       text-transform: uppercase;
@@ -236,6 +299,22 @@
       font-size: 13px;
     }
 
+    [data-theme="light"] .chip {
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    [data-theme="light"] .eyebrow {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    [data-theme="light"] .step {
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    [data-theme="light"] .eyebrow .dot {
+      box-shadow: 0 0 16px rgba(8, 145, 178, 0.5);
+    }
+
     footer {
       margin-top: 28px;
       color: var(--muted);
@@ -256,6 +335,7 @@
 </head>
 <body>
   <div class="layout">
+    <button class="theme-toggle" id="theme-toggle" aria-label="切換深色/淺色主題">Moon</button>
     <div class="glow" aria-hidden="true"></div>
     <div class="shell">
       <div class="eyebrow">
@@ -334,5 +414,33 @@
       </footer>
     </div>
   </div>
+  <script>
+    (function () {
+      var btn = document.getElementById('theme-toggle');
+      var root = document.documentElement;
+
+      function applyTheme(theme) {
+        root.dataset.theme = theme;
+        btn.textContent = theme === 'light' ? 'Moon' : 'Sun';
+        btn.setAttribute('aria-label', theme === 'light' ? '切換至深色模式' : '切換至淺色模式');
+      }
+
+      function resolveInitialTheme() {
+        var stored = localStorage.getItem('theme');
+        if (stored === 'light' || stored === 'dark') {
+          return stored;
+        }
+        return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      }
+
+      applyTheme(resolveInitialTheme());
+
+      btn.addEventListener('click', function () {
+        var next = root.dataset.theme === 'light' ? 'dark' : 'light';
+        applyTheme(next);
+        localStorage.setItem('theme', next);
+      });
+    })();
+  </script>
 </body>
 </html>
