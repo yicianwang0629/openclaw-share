@@ -112,6 +112,11 @@
         background: var(--primary-dark);
       }
 
+      .button:focus-visible {
+        outline: 3px solid rgba(15, 122, 229, 0.28);
+        outline-offset: 3px;
+      }
+
       .button-secondary {
         color: var(--primary-dark);
         background: #fff;
@@ -194,6 +199,12 @@
         color: var(--muted);
       }
 
+      .note {
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
       .tag {
         display: inline-block;
         margin-top: 14px;
@@ -262,10 +273,31 @@
         <span class="badge">🦞 免費養龍蝦計畫</span>
         <h1>零成本架設 24/7 個人 AI 助手</h1>
         <p>
-          用 <a href="https://github.com/openclaw/openclaw">OpenClaw</a> 當龍蝦、
-          <a href="https://www.oracle.com/cloud/free/">Oracle Cloud Always Free</a>
+          用
+          <a
+            href="https://github.com/openclaw/openclaw"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="OpenClaw（在新分頁開啟）"
+            >OpenClaw</a
+          >
+          當龍蝦、
+          <a
+            href="https://www.oracle.com/cloud/free/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Oracle Cloud Always Free（在新分頁開啟）"
+            >Oracle Cloud Always Free</a
+          >
           當池子，再搭配
-          <a href="https://github.com/BerriAI/litellm">LiteLLM</a> 與免費模型 API 當飼料，
+          <a
+            href="https://github.com/BerriAI/litellm"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LiteLLM（在新分頁開啟）"
+            >LiteLLM</a
+          >
+          與免費模型 API 當飼料，
           把你的個人 AI 助手養在雲上，全天候待命。
         </p>
         <div class="actions">
@@ -315,6 +347,7 @@
 
       <section class="section" id="roadmap">
         <h2>教學路線</h2>
+        <p class="note">下列連結會開啟 repo 內的 Markdown 文件，方便直接接續閱讀現有教學內容。</p>
         <div class="roadmap">
           <a href="./oracle-cloud-setup.md">
             <strong>1. 建立免費的池子</strong>
