@@ -69,21 +69,17 @@
   <script>
     mermaid.initialize({ startOnLoad: false, theme: 'dark' });
 
-    marked.use({
-      renderer: {
-        code({ text, lang }) {
-          if (lang === 'mermaid') {
-            return '<pre class="mermaid">' + text + '</pre>';
-          }
-          return false;
-        }
-      }
-    });
-
     fetch('litellm-setup.md')
       .then(function(r) { return r.text(); })
       .then(function(text) {
         document.getElementById('content').innerHTML = marked.parse(text);
+        document.querySelectorAll('code.language-mermaid').forEach(function(code) {
+          var pre = code.parentElement;
+          var div = document.createElement('pre');
+          div.className = 'mermaid';
+          div.textContent = code.textContent;
+          pre.replaceWith(div);
+        });
         mermaid.run();
       })
       .catch(function() {
