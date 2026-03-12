@@ -10,7 +10,7 @@
     />
     <style>
       :root {
-        color-scheme: light;
+        color-scheme: light dark;
         --bg: #f4f7fb;
         --surface: #ffffff;
         --surface-alt: #eef7ff;
@@ -223,6 +223,37 @@
           padding: 20px;
         }
       }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #091623;
+          --surface: #102233;
+          --surface-alt: #12304a;
+          --text: #e8f2fb;
+          --muted: #b5cbde;
+          --primary: #5aa8ff;
+          --primary-dark: #8fc4ff;
+          --border: #23425e;
+          --shadow: 0 18px 40px rgba(0, 0, 0, 0.32);
+        }
+
+        body {
+          background: linear-gradient(180deg, #08121d 0%, var(--bg) 100%);
+        }
+
+        .hero {
+          background: radial-gradient(circle at top right, #173149 0%, #102233 55%, #091623 100%);
+        }
+
+        .button-secondary {
+          background: #142b41;
+        }
+
+        .tag {
+          background: rgba(255, 214, 102, 0.18);
+          color: #ffd980;
+        }
+      }
     </style>
   </head>
   <body>
@@ -238,14 +269,12 @@
           把你的個人 AI 助手養在雲上，全天候待命。
         </p>
         <div class="actions">
-          <a class="button button-primary" href="https://github.com/yicianwang0629/openclaw-share">
-            查看 GitHub Repo
-          </a>
-          <a class="button button-secondary" href="#roadmap">開始閱讀教學</a>
+          <a class="button button-primary" href="#roadmap">開始閱讀教學</a>
+          <a class="button button-secondary" href="#components">了解三個元件</a>
         </div>
       </section>
 
-      <section class="section">
+      <section class="section" id="components">
         <h2>三個核心元件</h2>
         <div class="grid grid-3">
           <article class="card">
@@ -287,7 +316,7 @@
       <section class="section" id="roadmap">
         <h2>教學路線</h2>
         <div class="roadmap">
-          <a href="https://github.com/yicianwang0629/openclaw-share/blob/main/docs/oracle-cloud-setup.md">
+          <a href="./oracle-cloud-setup.md">
             <strong>1. 建立免費的池子</strong>
             <span>Oracle Cloud ARM VM、Tailscale 與成本防護設定。</span>
           </a>
@@ -296,7 +325,7 @@
             <span>OpenClaw 安裝與設定文件待補上，之後會接在池子與飼料之間。</span>
             <span class="tag">待撰寫</span>
           </article>
-          <a href="https://github.com/yicianwang0629/openclaw-share/blob/main/docs/litellm-setup.md">
+          <a href="./litellm-setup.md">
             <strong>3. 準備飼料</strong>
             <span>串接 Ollama Cloud、Gemini 與 LiteLLM，建立穩定的模型入口。</span>
           </a>
