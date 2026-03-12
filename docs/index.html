@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>免費養龍蝦｜OpenClaw + Oracle Cloud + LiteLLM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-1: #0f172a;
+      --bg-2: #0b1222;
+      --glass: rgba(255, 255, 255, 0.06);
+      --card: rgba(255, 255, 255, 0.08);
+      --accent: #22d3ee;
+      --accent-2: #f59e0b;
+      --text: #e2e8f0;
+      --muted: #cbd5e1;
+      --stroke: rgba(255, 255, 255, 0.1);
+      --shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at 20% 20%, rgba(34, 211, 238, 0.12), transparent 30%),
+                  radial-gradient(circle at 80% 10%, rgba(245, 158, 11, 0.12), transparent 28%),
+                  radial-gradient(circle at 50% 80%, rgba(59, 130, 246, 0.08), transparent 35%),
+                  linear-gradient(135deg, var(--bg-1), var(--bg-2));
+      color: var(--text);
+      font-family: 'Space Grotesk', 'Noto Sans TC', system-ui, -apple-system, sans-serif;
+      padding: 64px 16px 48px;
+      line-height: 1.6;
+    }
+
+    .layout {
+      max-width: 1080px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .glow {
+      position: absolute;
+      inset: 0;
+      filter: blur(80px);
+      opacity: 0.35;
+      pointer-events: none;
+      background: radial-gradient(circle at 30% 40%, rgba(34, 211, 238, 0.25), transparent 40%),
+                  radial-gradient(circle at 80% 30%, rgba(245, 158, 11, 0.25), transparent 32%);
+      z-index: 0;
+    }
+
+    .shell {
+      position: relative;
+      z-index: 1;
+      background: rgba(15, 23, 42, 0.35);
+      border: 1px solid var(--stroke);
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    h1 {
+      font-size: clamp(32px, 4vw, 46px);
+      margin: 0 0 12px;
+      letter-spacing: -0.03em;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 13px;
+    }
+
+    .eyebrow .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 16px rgba(34, 211, 238, 0.8);
+    }
+
+    .lede {
+      max-width: 720px;
+      font-size: 18px;
+      color: var(--muted);
+      margin: 0 0 24px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 20px 0 32px;
+    }
+
+    .btn {
+      padding: 12px 18px;
+      border-radius: 14px;
+      border: 1px solid var(--stroke);
+      background: var(--glass);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, var(--accent), #38bdf8);
+      color: #0b1222;
+      border-color: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 10px 30px rgba(34, 211, 238, 0.35);
+    }
+
+    .btn.secondary {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .btn.primary:hover {
+      background: linear-gradient(135deg, #67e8f9, #38bdf8);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .card {
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid var(--stroke);
+      background: var(--card);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      color: #0b1222;
+      background: var(--accent-2);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+      margin: 12px 0 28px;
+    }
+
+    .step {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--stroke);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .step .num {
+      width: 28px;
+      height: 28px;
+      border-radius: 12px;
+      background: rgba(34, 211, 238, 0.12);
+      border: 1px solid rgba(34, 211, 238, 0.6);
+      color: var(--accent);
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .step .content {
+      flex: 1;
+    }
+
+    .step h4 {
+      margin: 0 0 4px;
+      font-size: 16px;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .chip {
+      padding: 8px 12px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--stroke);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    footer {
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    a {
+      color: var(--accent);
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 32px 14px; }
+      .shell { padding: 22px; }
+      .actions { flex-direction: column; align-items: stretch; }
+      .btn { text-align: center; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="shell">
+      <div class="eyebrow">
+        <span class="dot"></span>
+        免費 24/7 個人 AI 助手 — OpenClaw + Oracle Cloud + LiteLLM
+      </div>
+      <h1>免費養龍蝦</h1>
+      <p class="lede">
+        用 Oracle Cloud 永久免費的 ARM VM、LiteLLM 免費模型，零成本打造 24/7 私人 AI 助手。
+        完整中文教學，從開 VM、裝 OpenClaw，到接上多家免費模型 API，一步走完。
+      </p>
+
+      <div class="actions">
+        <a class="btn primary" href="oracle-cloud-setup.md">步驟 1：建立免費池子（Oracle + Tailscale）</a>
+        <a class="btn secondary" href="litellm-setup.md">步驟 3：準備飼料（免費 LLM + LiteLLM）</a>
+        <a class="btn secondary" href="https://github.com/openclaw/openclaw" target="_blank" rel="noreferrer">OpenClaw 原始碼</a>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="pill">Roadmap</div>
+          <h3>三個核心元件</h3>
+          <p>龍蝦（OpenClaw）、池子（Oracle Cloud ARM VM）、飼料（Ollama Cloud + LiteLLM）。全部免費，永久運行。</p>
+        </div>
+        <div class="card">
+          <div class="pill">架構</div>
+          <h3>安全、私有、可擴充</h3>
+          <p>Tailnet 內的 Oracle VM 跑 OpenClaw Gateway（:18789）、LiteLLM Proxy（:4000），前面用 Tailscale Serve/Funnel 安全暴露服務。</p>
+        </div>
+        <div class="card">
+          <div class="pill">收費 0 元</div>
+          <h3>Always Free + 免費模型</h3>
+          <p>Oracle ARM VM（4 OCPU / 24 GB / 200 GB）永久免費；模型用 Ollama Cloud + Gemini（家庭組），LiteLLM 自動切換。</p>
+        </div>
+      </div>
+
+      <h3>開始之前</h3>
+      <div class="chips">
+        <span class="chip">Visa / Mastercard / AMEX 用於 Oracle 驗證</span>
+        <span class="chip">Tailscale 帳號（免費）</span>
+        <span class="chip">約 1–2 小時</span>
+      </div>
+
+      <h3 style="margin-top: 24px;">完整路線圖</h3>
+      <div class="timeline">
+        <div class="step">
+          <div class="num">1</div>
+          <div class="content">
+            <h4><a href="oracle-cloud-setup.md">建立免費的池子</a></h4>
+            <p>在 Oracle Cloud 開啟 ARM VM，設定 Tailscale，取得可長期運行的主機，無冷啟動。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <div class="content">
+            <h4>安裝龍蝦（OpenClaw）</h4>
+            <p>即將推出：部署 OpenClaw Gateway，連上 LINE / Telegram / Discord / Slack 等 20+ 訊息頻道。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <div class="content">
+            <h4><a href="litellm-setup.md">準備飼料 — LiteLLM</a></h4>
+            <p>整合多家免費 LLM API，啟用 LiteLLM Proxy，自動負載平衡與 fallback，讓龍蝦永遠有東西吃。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>接下來你可以</h3>
+        <p>跟著文件完成步驟 1 與 3，確保 VM 與 LiteLLM 都能運作。步驟 2 完成後，會更新本頁並加入快速安裝指令。</p>
+      </div>
+
+      <footer>
+        Maintained by <a href="https://github.com/yicianwang0629/openclaw-share">yicianwang0629/openclaw-share</a>. 若有問題，歡迎提 Issue 或 PR。
+      </footer>
+    </div>
+  </div>
+</body>
+</html>
