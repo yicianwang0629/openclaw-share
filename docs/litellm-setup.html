@@ -183,7 +183,7 @@
         /* Remove previously rendered SVGs and restore original source */
         document.querySelectorAll('pre.mermaid[data-source]').forEach(function (div) {
           div.removeAttribute('data-processed');
-          div.innerHTML = div.getAttribute('data-source');
+          div.textContent = div.getAttribute('data-source');
         });
         initMermaid(theme);
         mermaid.run();
@@ -202,7 +202,10 @@
 
       /* ── Fetch & render markdown ─────────────────────────── */
       fetch('litellm-setup.md')
-        .then(function (r) { return r.text(); })
+        .then(function (r) {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.text();
+        })
         .then(function (text) {
           document.getElementById('content').innerHTML = marked.parse(text);
           document.querySelectorAll('code.language-mermaid').forEach(function (code) {

@@ -42,7 +42,7 @@ flowchart LR
 
 ## 線上頁面
 
-- [Landing Page（GitHub Pages）](docs/index.html)：快速總覽與文件導覽。
+- [Landing Page（GitHub Pages）](https://yicianwang0629.github.io/openclaw-share/)：快速總覽與文件導覽。
 
 ## 前置需求
 
