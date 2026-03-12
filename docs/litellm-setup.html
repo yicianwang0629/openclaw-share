@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>準備飼料 — LLM 模型 + LiteLLM</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5/github-markdown-dark.min.css">
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f172a, #0b1222);
+      color: #e2e8f0;
+      font-family: system-ui, -apple-system, 'Noto Sans TC', 'PingFang TC', sans-serif;
+      padding: 48px 16px;
+    }
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .back-link {
+      display: inline-block;
+      color: #22d3ee;
+      text-decoration: none;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+    .back-link:hover { text-decoration: underline; }
+    .markdown-body {
+      background: transparent;
+      color: #e2e8f0;
+    }
+    .markdown-body a { color: #22d3ee; }
+    .markdown-body h1, .markdown-body h2, .markdown-body h3 {
+      border-bottom-color: rgba(255,255,255,0.1);
+    }
+    .markdown-body code {
+      background: rgba(255,255,255,0.08);
+    }
+    .markdown-body pre {
+      background: rgba(0,0,0,0.3);
+    }
+    .markdown-body table tr {
+      background: transparent;
+      border-color: rgba(255,255,255,0.1);
+    }
+    .markdown-body table tr:nth-child(2n) {
+      background: rgba(255,255,255,0.03);
+    }
+    .markdown-body table th, .markdown-body table td {
+      border-color: rgba(255,255,255,0.1);
+    }
+    .markdown-body blockquote {
+      border-left-color: #22d3ee;
+      color: #cbd5e1;
+    }
+    .markdown-body hr {
+      background-color: rgba(255,255,255,0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a class="back-link" href="index.html">&larr; 返回首頁</a>
+    <div id="content" class="markdown-body">載入中...</div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/marked@11/marked.min.js"></script>
+  <script>
+    fetch('litellm-setup.md')
+      .then(function(r) { return r.text(); })
+      .then(function(text) {
+        document.getElementById('content').innerHTML = marked.parse(text);
+      })
+      .catch(function() {
+        document.getElementById('content').innerHTML = '<p>無法載入文件，請<a href="litellm-setup.md">直接查看 Markdown</a>。</p>';
+      });
+  </script>
+</body>
+</html>
