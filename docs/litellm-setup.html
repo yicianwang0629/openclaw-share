@@ -65,11 +65,25 @@
     <div id="content" class="markdown-body">載入中...</div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/marked@11/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
   <script>
+    mermaid.initialize({ startOnLoad: false, theme: 'dark' });
+
+    var renderer = new marked.Renderer();
+    var defaultCode = renderer.code.bind(renderer);
+    renderer.code = function(token) {
+      if (token.lang === 'mermaid') {
+        return '<pre class="mermaid">' + token.text + '</pre>';
+      }
+      return defaultCode(token);
+    };
+    marked.use({ renderer: renderer });
+
     fetch('litellm-setup.md')
       .then(function(r) { return r.text(); })
       .then(function(text) {
         document.getElementById('content').innerHTML = marked.parse(text);
+        mermaid.run();
       })
       .catch(function() {
         document.getElementById('content').innerHTML = '<p>無法載入文件，請<a href="litellm-setup.md">直接查看 Markdown</a>。</p>';
